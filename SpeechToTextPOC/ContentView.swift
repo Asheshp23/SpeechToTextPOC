@@ -9,13 +9,23 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List(InterviewQuestionModel.previewData){ quetion in
+                NavigationLink {
+                    QuestionAndAnswerView(question: quetion)
+                } label: {
+                    Text(quetion.questionText)
+    
+                }
+                .listRowBackground(
+                    Color.indigo.opacity(0.5)
+                        .cornerRadius(8.0)
+                )
+            }
+            .listRowSpacing(8.0)
+            .listStyle(.grouped)
+            .padding(.all)
         }
-        .padding()
     }
 }
 

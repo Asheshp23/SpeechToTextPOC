@@ -11,6 +11,9 @@
 		0FA51E262B71DF4000CC6650 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA51E252B71DF4000CC6650 /* ContentView.swift */; };
 		0FA51E282B71DF4100CC6650 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0FA51E272B71DF4100CC6650 /* Assets.xcassets */; };
 		0FA51E2B2B71DF4100CC6650 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0FA51E2A2B71DF4100CC6650 /* Preview Assets.xcassets */; };
+		0FA51E392B71E32900CC6650 /* InterviewQuestionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA51E382B71E32900CC6650 /* InterviewQuestionModel.swift */; };
+		0FA51E3D2B71E38800CC6650 /* QuestionAndAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA51E3C2B71E38800CC6650 /* QuestionAndAnswerView.swift */; };
+		0FA51E402B71E3BA00CC6650 /* SpeechTranscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA51E3F2B71E3BA00CC6650 /* SpeechTranscriber.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +22,9 @@
 		0FA51E252B71DF4000CC6650 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		0FA51E272B71DF4100CC6650 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0FA51E2A2B71DF4100CC6650 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		0FA51E382B71E32900CC6650 /* InterviewQuestionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewQuestionModel.swift; sourceTree = "<group>"; };
+		0FA51E3C2B71E38800CC6650 /* QuestionAndAnswerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionAndAnswerView.swift; sourceTree = "<group>"; };
+		0FA51E3F2B71E3BA00CC6650 /* SpeechTranscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTranscriber.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +57,9 @@
 		0FA51E222B71DF4000CC6650 /* SpeechToTextPOC */ = {
 			isa = PBXGroup;
 			children = (
+				0FA51E3E2B71E3AB00CC6650 /* Services */,
+				0FA51E3A2B71E35D00CC6650 /* Views */,
+				0FA51E372B71E31700CC6650 /* Models */,
 				0FA51E232B71DF4000CC6650 /* SpeechToTextPOCApp.swift */,
 				0FA51E252B71DF4000CC6650 /* ContentView.swift */,
 				0FA51E272B71DF4100CC6650 /* Assets.xcassets */,
@@ -65,6 +74,38 @@
 				0FA51E2A2B71DF4100CC6650 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		0FA51E372B71E31700CC6650 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0FA51E382B71E32900CC6650 /* InterviewQuestionModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0FA51E3A2B71E35D00CC6650 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0FA51E3B2B71E36800CC6650 /* QuestionAndAnswerView */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0FA51E3B2B71E36800CC6650 /* QuestionAndAnswerView */ = {
+			isa = PBXGroup;
+			children = (
+				0FA51E3C2B71E38800CC6650 /* QuestionAndAnswerView.swift */,
+			);
+			path = QuestionAndAnswerView;
+			sourceTree = "<group>";
+		};
+		0FA51E3E2B71E3AB00CC6650 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				0FA51E3F2B71E3BA00CC6650 /* SpeechTranscriber.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,7 +178,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FA51E402B71E3BA00CC6650 /* SpeechTranscriber.swift in Sources */,
+				0FA51E3D2B71E38800CC6650 /* QuestionAndAnswerView.swift in Sources */,
 				0FA51E262B71DF4000CC6650 /* ContentView.swift in Sources */,
+				0FA51E392B71E32900CC6650 /* InterviewQuestionModel.swift in Sources */,
 				0FA51E242B71DF4000CC6650 /* SpeechToTextPOCApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,6 +318,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"SpeechToTextPOC/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to your microphone for speech recognition.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need access to your microphone for speech recognition.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -302,6 +348,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"SpeechToTextPOC/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to your microphone for speech recognition.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need access to your microphone for speech recognition.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
