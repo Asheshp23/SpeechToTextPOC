@@ -22,6 +22,8 @@ class SpeechTranscriber: ObservableObject {
     }
     
     @Published var transcript: String = ""
+    @Published var isRecording: Bool = false
+    @Published var errorText: String = ""
     
     private var audioEngine: AVAudioEngine?
     private var request: SFSpeechAudioBufferRecognitionRequest?
@@ -53,19 +55,23 @@ class SpeechTranscriber: ObservableObject {
         }
     }
     
-    @MainActor func startTranscribing() {
+    @MainActor
+    func startTranscribing() {
         Task {
+            self.transcript = ""
             transcribe()
         }
     }
     
-    @MainActor func resetTranscript() {
+    @MainActor
+    func resetTranscript() {
         Task {
             reset()
         }
     }
     
-    @MainActor func stopTranscribing() {
+    @MainActor
+    func stopTranscribing() {
         Task {
             reset()
         }
@@ -81,11 +87,11 @@ class SpeechTranscriber: ObservableObject {
             self.transcribe(RecognizerError.recognizerIsUnavailable)
             return
         }
-        
         do {
             let (audioEngine, request) = try Self.prepareEngine()
             self.audioEngine = audioEngine
             self.request = request
+            self.isRecording = true
             self.task = recognizer.recognitionTask(with: request, resultHandler: { [weak self] result, error in
                 self?.recognitionHandler(audioEngine: audioEngine, result: result, error: error)
             })
@@ -97,6 +103,7 @@ class SpeechTranscriber: ObservableObject {
     
     /// Reset the speech recognizer.
     private func reset() {
+        self.isRecording = false
         task?.cancel()
         audioEngine?.stop()
         audioEngine?.inputNode.removeTap(onBus: 0)
@@ -134,10 +141,10 @@ class SpeechTranscriber: ObservableObject {
         if receivedFinalResult || receivedError {
             audioEngine.stop()
             audioEngine.inputNode.removeTap(onBus: 0)
+            self.reset()
         }
         
         if let result {
-            print(result.bestTranscription.formattedString)
             transcribe(result.bestTranscription.formattedString)
         }
     }
@@ -156,7 +163,7 @@ class SpeechTranscriber: ObservableObject {
             errorMessage += error.localizedDescription
         }
         Task { @MainActor [errorMessage] in
-            transcript = "<< \(errorMessage) >>"
+            errorText = errorMessage
         }
     }
 }

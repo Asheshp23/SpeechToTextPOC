@@ -6,7 +6,7 @@ struct QuestionAndAnswerView: View {
     var question: InterviewQuestionModel
     
     @State private var openAnswerTextBox: Bool = false
-    @State private var isRecording: Bool = false
+    @State private var fullTranscript: String = ""
     
     @StateObject var speechTranscriber: SpeechTranscriber = SpeechTranscriber()
     
@@ -18,9 +18,9 @@ struct QuestionAndAnswerView: View {
             .overlay(alignment: .center) {
                 Circle()
                     .foregroundColor(Color.red.opacity(0.5))
-                Image(systemName: isRecording ? "square.fill" : "mic.fill")
+                Image(systemName: speechTranscriber.isRecording ? "square.fill" : "mic.fill")
                     .font(.title)
-                    .accessibilityLabel(isRecording ? "Recording" : "Not Recording")
+                    .accessibilityLabel(speechTranscriber.isRecording ? "Recording" : "Not Recording")
                     .foregroundColor(.red)
                     .bold()
             }
@@ -30,16 +30,24 @@ struct QuestionAndAnswerView: View {
         VStack(alignment: .leading) {
             Text("Answer:")
             if openAnswerTextBox {
-                TextEditor(text: $speechTranscriber.transcript)
-                    .padding()
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(10)
-                    .padding()
+                if speechTranscriber.isRecording {
+                    Text(computeFullTranscript())
+                        .padding()
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(10)
+                        .padding()
+                } else {
+                    TextEditor(text: $fullTranscript)
+                        .padding()
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(10)
+                        .padding()
+                }
                 Spacer()
                 HStack {
                     Spacer()
                     VStack {
-                        if !isRecording {
+                        if !speechTranscriber.isRecording {
                             Text("Tap to start")
                                 .foregroundColor(.red)
                                 .bold()
@@ -47,7 +55,7 @@ struct QuestionAndAnswerView: View {
                         recordingButtonView
                             .onTapGesture {
                                 withAnimation {
-                                    isRecording.toggle()
+                                    speechTranscriber.isRecording.toggle()
                                     let generator = UIImpactFeedbackGenerator(style: .medium)
                                     generator.impactOccurred()
                                 }
@@ -83,7 +91,7 @@ struct QuestionAndAnswerView: View {
             }
             Spacer()
         }
-        .onChange(of: isRecording, initial: false, { oldValue, newValue in
+        .onChange(of: speechTranscriber.isRecording, initial: false, { oldValue, newValue in
             handleRecordingStateChange(newValue)
         })
         .padding(.all)
@@ -105,11 +113,18 @@ struct QuestionAndAnswerView: View {
     private func startRecording() {
         speechTranscriber.resetTranscript()
         speechTranscriber.startTranscribing()
-        isRecording = true
+    }
+    
+    fileprivate func computeFullTranscript() -> String {
+        if fullTranscript.isEmpty {
+            return speechTranscriber.transcript
+        } else {
+            return fullTranscript + ((fullTranscript.last == ".") ? "" : "." + "\n\(speechTranscriber.transcript)")
+        }
     }
     
     private func stopRecording() {
+        fullTranscript = computeFullTranscript()
         speechTranscriber.stopTranscribing()
-        isRecording = false
     }
 }
