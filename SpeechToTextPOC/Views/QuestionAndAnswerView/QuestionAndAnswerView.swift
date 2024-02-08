@@ -12,7 +12,7 @@ struct QuestionAndAnswerView: View {
     @State private var openAnswerTextBox: Bool = false
     @State private var fullTranscript: String = ""
     @State private var liveConfiguration: Waveform.Configuration = Waveform.Configuration(
-        style: .striped(.init(color: randomColor, width: 3, spacing: 3))
+        style: .striped(.init(color: .red, width: 3, spacing: 3)), damping: .init(percentage: 0.05,sides: .both)
     )
     @State private var silence: Bool = true
     
@@ -48,7 +48,7 @@ struct QuestionAndAnswerView: View {
                     WaveformLiveCanvas(
                         samples: speechTranscriber.channelDataValueArray,
                         configuration: liveConfiguration,
-                        renderer: CircularWaveformRenderer(kind: .ring(0.7)),
+                        renderer: LinearWaveformRenderer(),
                         shouldDrawSilencePadding: silence
                     )
                 } else {
