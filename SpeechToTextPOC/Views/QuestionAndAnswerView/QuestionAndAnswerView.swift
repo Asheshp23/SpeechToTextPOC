@@ -1,12 +1,20 @@
 import SwiftUI
 import Speech
 import AVFoundation
+import DSWaveformImage
+import DSWaveformImageViews
 
 struct QuestionAndAnswerView: View {
     var question: InterviewQuestionModel
+    private static let colors = [UIColor.systemPink, UIColor.systemBlue, UIColor.systemGreen]
+    private static var randomColor: UIColor { colors.randomElement()! }
     
     @State private var openAnswerTextBox: Bool = false
     @State private var fullTranscript: String = ""
+    @State private var liveConfiguration: Waveform.Configuration = Waveform.Configuration(
+        style: .striped(.init(color: randomColor, width: 3, spacing: 3))
+    )
+    @State private var silence: Bool = true
     
     @StateObject var speechTranscriber: SpeechTranscriber = SpeechTranscriber()
     
@@ -36,6 +44,13 @@ struct QuestionAndAnswerView: View {
                         .background(Color.gray.opacity(0.2))
                         .cornerRadius(10)
                         .padding()
+                    
+                    WaveformLiveCanvas(
+                        samples: speechTranscriber.channelDataValueArray,
+                        configuration: liveConfiguration,
+                        renderer: CircularWaveformRenderer(kind: .ring(0.7)),
+                        shouldDrawSilencePadding: silence
+                    )
                 } else {
                     TextEditor(text: $fullTranscript)
                         .padding()

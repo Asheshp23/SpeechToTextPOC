@@ -14,6 +14,8 @@
 		0FA51E392B71E32900CC6650 /* InterviewQuestionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA51E382B71E32900CC6650 /* InterviewQuestionModel.swift */; };
 		0FA51E3D2B71E38800CC6650 /* QuestionAndAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA51E3C2B71E38800CC6650 /* QuestionAndAnswerView.swift */; };
 		0FA51E402B71E3BA00CC6650 /* SpeechTranscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA51E3F2B71E3BA00CC6650 /* SpeechTranscriber.swift */; };
+		0FB715512B746FE300E35708 /* DSWaveformImage in Frameworks */ = {isa = PBXBuildFile; productRef = 0FB715502B746FE300E35708 /* DSWaveformImage */; };
+		0FB715532B746FE300E35708 /* DSWaveformImageViews in Frameworks */ = {isa = PBXBuildFile; productRef = 0FB715522B746FE300E35708 /* DSWaveformImageViews */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FB715512B746FE300E35708 /* DSWaveformImage in Frameworks */,
+				0FB715532B746FE300E35708 /* DSWaveformImageViews in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,6 +128,10 @@
 			dependencies = (
 			);
 			name = SpeechToTextPOC;
+			packageProductDependencies = (
+				0FB715502B746FE300E35708 /* DSWaveformImage */,
+				0FB715522B746FE300E35708 /* DSWaveformImageViews */,
+			);
 			productName = SpeechToTextPOC;
 			productReference = 0FA51E202B71DF4000CC6650 /* SpeechToTextPOC.app */;
 			productType = "com.apple.product-type.application";
@@ -152,6 +160,9 @@
 				Base,
 			);
 			mainGroup = 0FA51E172B71DF4000CC6650;
+			packageReferences = (
+				0FB7154F2B746FE300E35708 /* XCRemoteSwiftPackageReference "DSWaveformImage" */,
+			);
 			productRefGroup = 0FA51E212B71DF4000CC6650 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -390,6 +401,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0FB7154F2B746FE300E35708 /* XCRemoteSwiftPackageReference "DSWaveformImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dmrschmidt/DSWaveformImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 14.2.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0FB715502B746FE300E35708 /* DSWaveformImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0FB7154F2B746FE300E35708 /* XCRemoteSwiftPackageReference "DSWaveformImage" */;
+			productName = DSWaveformImage;
+		};
+		0FB715522B746FE300E35708 /* DSWaveformImageViews */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0FB7154F2B746FE300E35708 /* XCRemoteSwiftPackageReference "DSWaveformImage" */;
+			productName = DSWaveformImageViews;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0FA51E182B71DF4000CC6650 /* Project object */;
 }

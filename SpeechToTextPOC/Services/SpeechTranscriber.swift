@@ -24,6 +24,7 @@ class SpeechTranscriber: ObservableObject {
     @Published var transcript: String = ""
     @Published var isRecording: Bool = false
     @Published var errorText: String = ""
+    @Published var channelDataValueArray: [Float] = []
     
     private var audioEngine: AVAudioEngine?
     private var request: SFSpeechAudioBufferRecognitionRequest?
@@ -88,7 +89,7 @@ class SpeechTranscriber: ObservableObject {
             return
         }
         do {
-            let (audioEngine, request) = try Self.prepareEngine()
+            let (audioEngine, request) = try self.prepareEngine()
             self.audioEngine = audioEngine
             self.request = request
             self.isRecording = true
@@ -113,7 +114,7 @@ class SpeechTranscriber: ObservableObject {
         task = nil
     }
     
-    private static func prepareEngine() throws -> (AVAudioEngine, SFSpeechAudioBufferRecognitionRequest) {
+    private func prepareEngine() throws -> (AVAudioEngine, SFSpeechAudioBufferRecognitionRequest) {
         let audioEngine = AVAudioEngine()
         
         let request = SFSpeechAudioBufferRecognitionRequest()
@@ -127,6 +128,7 @@ class SpeechTranscriber: ObservableObject {
         let recordingFormat = inputNode.outputFormat(forBus: 0)
         inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
             request.append(buffer)
+            self.getSamples(from: buffer)
         }
         audioEngine.prepare()
         try audioEngine.start()
@@ -146,6 +148,14 @@ class SpeechTranscriber: ObservableObject {
         
         if let result {
             transcribe(result.bestTranscription.formattedString)
+        }
+    }
+    
+    nonisolated private func getSamples(from buffer: AVAudioPCMBuffer) {
+        guard let channelData = buffer.floatChannelData else { return }
+        let channelDataArray = Array(UnsafeBufferPointer(start: channelData.pointee, count: Int(buffer.frameLength)))
+        Task { @MainActor in 
+            channelDataValueArray = channelDataArray
         }
     }
     
