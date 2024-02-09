@@ -1,20 +1,13 @@
 import SwiftUI
 import Speech
 import AVFoundation
-import DSWaveformImage
-import DSWaveformImageViews
+import AudioKitUI
 
 struct QuestionAndAnswerView: View {
     var question: InterviewQuestionModel
-    private static let colors = [UIColor.systemPink, UIColor.systemBlue, UIColor.systemGreen]
-    private static var randomColor: UIColor { colors.randomElement()! }
     
     @State private var openAnswerTextBox: Bool = false
     @State private var fullTranscript: String = ""
-    @State private var liveConfiguration: Waveform.Configuration = Waveform.Configuration(
-        style: .striped(.init(color: .red, width: 3, spacing: 3)), damping: .init(percentage: 0.05,sides: .both)
-    )
-    @State private var silence: Bool = true
     
     @StateObject var speechTranscriber: SpeechTranscriber = SpeechTranscriber()
     
@@ -45,12 +38,14 @@ struct QuestionAndAnswerView: View {
                         .cornerRadius(10)
                         .padding()
                     
-                    WaveformLiveCanvas(
-                        samples: speechTranscriber.channelDataValueArray,
-                        configuration: liveConfiguration,
-                        renderer: LinearWaveformRenderer(),
-                        shouldDrawSilencePadding: silence
-                    )
+                    Spacer()
+                    if speechTranscriber.showWaveForms {
+                        AudioWaveform(rmsVals: speechTranscriber.channelDataValueArray)
+                            .foregroundColor(.red)
+                            .frame(height: 200.0)
+                            .background(Color.gray.opacity(0.2))
+                    }
+                    
                 } else {
                     TextEditor(text: $fullTranscript)
                         .padding()
@@ -59,6 +54,19 @@ struct QuestionAndAnswerView: View {
                         .padding()
                 }
                 Spacer()
+                if !speechTranscriber.isRecording {
+                    HStack {
+                        Spacer()
+                        Text(speechTranscriber.showWaveForms ? "Hide wave forms" : "Show wave forms")
+                            .padding(.all)
+                            .frame(height: 40.0)
+                            .background(Color.gray.opacity(0.2))
+                        Spacer()
+                    }
+                    .onTapGesture {
+                        speechTranscriber.showWaveForms.toggle()
+                    }
+                }
                 HStack {
                     Spacer()
                     VStack {

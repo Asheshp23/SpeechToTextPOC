@@ -25,6 +25,7 @@ class SpeechTranscriber: ObservableObject {
     @Published var isRecording: Bool = false
     @Published var errorText: String = ""
     @Published var channelDataValueArray: [Float] = []
+    @Published var showWaveForms: Bool = false
     
     private var audioEngine: AVAudioEngine?
     private var request: SFSpeechAudioBufferRecognitionRequest?
@@ -112,6 +113,7 @@ class SpeechTranscriber: ObservableObject {
         request?.endAudio()
         request = nil
         task = nil
+        showWaveForms.toggle()
     }
     
     private func prepareEngine() throws -> (AVAudioEngine, SFSpeechAudioBufferRecognitionRequest) {
@@ -152,7 +154,7 @@ class SpeechTranscriber: ObservableObject {
     }
     
     nonisolated private func getSamples(from buffer: AVAudioPCMBuffer) {
-        guard let channelData = buffer.floatChannelData else { return }
+        guard let channelData = buffer.floatChannelData, showWaveForms else { return }
         let channelDataArray = Array(UnsafeBufferPointer(start: channelData.pointee, count: Int(buffer.frameLength)))
         Task { @MainActor in 
             channelDataValueArray = channelDataArray
