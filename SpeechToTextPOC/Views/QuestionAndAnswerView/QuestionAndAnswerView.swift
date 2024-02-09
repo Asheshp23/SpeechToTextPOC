@@ -54,7 +54,7 @@ struct QuestionAndAnswerView: View {
                         .padding()
                 }
                 Spacer()
-                if !speechTranscriber.isRecording {
+                if speechTranscriber.isRecording {
                     HStack {
                         Spacer()
                         Text(speechTranscriber.showWaveForms ? "Hide wave forms" : "Show wave forms")
