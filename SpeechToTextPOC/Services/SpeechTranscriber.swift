@@ -24,7 +24,7 @@ class SpeechTranscriber: ObservableObject {
     @Published var transcript: String = ""
     @Published var isRecording: Bool = false
     @Published var errorText: String = ""
-    @Published var channelDataValueArray: [Float] = []
+    @Published var channelDataValueArray: [Float] = [0.0]
     @Published var showWaveForms: Bool = false
     
     private var audioEngine: AVAudioEngine?
@@ -157,7 +157,7 @@ class SpeechTranscriber: ObservableObject {
         guard let channelData = buffer.floatChannelData, showWaveForms else { return }
         let channelDataArray = Array(UnsafeBufferPointer(start: channelData.pointee, count: Int(buffer.frameLength)))
         Task { @MainActor in 
-            channelDataValueArray = channelDataArray
+            channelDataValueArray += channelDataArray
         }
     }
     

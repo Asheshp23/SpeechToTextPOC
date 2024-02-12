@@ -2,14 +2,19 @@ import SwiftUI
 import Speech
 import AVFoundation
 import AudioKitUI
+import Waveform
 
 struct QuestionAndAnswerView: View {
     var question: InterviewQuestionModel
     
     @State private var openAnswerTextBox: Bool = false
     @State private var fullTranscript: String = ""
-    
+  
     @StateObject var speechTranscriber: SpeechTranscriber = SpeechTranscriber()
+    
+    var sampleBuffer: SampleBuffer {
+        SampleBuffer(samples: speechTranscriber.channelDataValueArray)
+    }
     
     var recordingButtonView: some View {
         Circle()
@@ -40,12 +45,8 @@ struct QuestionAndAnswerView: View {
                     
                     Spacer()
                     if speechTranscriber.showWaveForms {
-                        AudioWaveform(rmsVals: speechTranscriber.channelDataValueArray)
-                            .foregroundColor(.red)
-                            .frame(height: 200.0)
-                            .background(Color.gray.opacity(0.2))
+                            Waveform(samples: sampleBuffer)
                     }
-                    
                 } else {
                     TextEditor(text: $fullTranscript)
                         .padding()
