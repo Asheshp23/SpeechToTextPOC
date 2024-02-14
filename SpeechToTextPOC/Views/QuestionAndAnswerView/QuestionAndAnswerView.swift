@@ -37,11 +37,18 @@ struct QuestionAndAnswerView: View {
             Text("Answer:")
             if openAnswerTextBox {
                 if speechTranscriber.isRecording {
-                    Text(computeFullTranscript())
-                        .padding()
-                        .background(Color.gray.opacity(0.2))
-                        .cornerRadius(10)
-                        .padding()
+                    ScrollView {
+                        ScrollViewReader { value in
+                            Text(computeFullTranscript())
+                                .font(.system(size: 16))
+                                .padding()
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(.white)
+                                .background(Color.gray.opacity(0.2))
+                                .cornerRadius(10)
+                        }
+                    }
+                    .frame(maxWidth: .infinity ,maxHeight: 50.0)
                     
                     Spacer()
                     if speechTranscriber.showWaveForms {
