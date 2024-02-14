@@ -9,7 +9,7 @@ struct QuestionAndAnswerView: View {
     
     @State private var openAnswerTextBox: Bool = false
     @State private var fullTranscript: String = ""
-  
+    
     @StateObject var speechTranscriber: SpeechTranscriber = SpeechTranscriber()
     
     var sampleBuffer: SampleBuffer {
@@ -38,21 +38,29 @@ struct QuestionAndAnswerView: View {
             if openAnswerTextBox {
                 if speechTranscriber.isRecording {
                     ScrollView {
-                        ScrollViewReader { value in
+                        ScrollViewReader { proxy in
                             Text(computeFullTranscript())
                                 .font(.system(size: 16))
-                                .padding()
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.white)
-                                .background(Color.gray.opacity(0.2))
-                                .cornerRadius(10)
+                                .padding()
+                                .id(1)
+                                .onChange(of: speechTranscriber.transcript) { oldValue, newValue in
+                                    withAnimation(.easeInOut) {
+                                        proxy.scrollTo(1, anchor: .bottom)
+                                    }
+                                }
                         }
                     }
+                    .scrollIndicators(.visible, axes: .vertical)
+                    .background(Color.gray.opacity(0.2))
+                    .cornerRadius(10)
                     .frame(maxWidth: .infinity ,maxHeight: 50.0)
+                    .padding(.all)
                     
-                    Spacer()
                     if speechTranscriber.showWaveForms {
-                            Waveform(samples: sampleBuffer)
+                        Spacer()
+                        Waveform(samples: sampleBuffer)
                     }
                 } else {
                     TextEditor(text: $fullTranscript)
