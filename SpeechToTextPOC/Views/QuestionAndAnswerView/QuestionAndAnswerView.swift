@@ -126,7 +126,6 @@ struct QuestionAndAnswerView: View {
             }
             HStack {
                 answerView
-                Spacer()
             }
             Spacer()
         }

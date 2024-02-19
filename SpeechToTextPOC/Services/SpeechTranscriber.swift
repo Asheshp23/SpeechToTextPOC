@@ -156,8 +156,8 @@ class SpeechTranscriber: ObservableObject {
     nonisolated private func getSamples(from buffer: AVAudioPCMBuffer) {
         guard let channelData = buffer.floatChannelData, showWaveForms else { return }
         let channelDataArray = Array(UnsafeBufferPointer(start: channelData.pointee, count: Int(buffer.frameLength)))
-        Task { @MainActor in 
-            channelDataValueArray += channelDataArray
+        DispatchQueue.main.async { [weak self] in
+            self?.channelDataValueArray += channelDataArray
         }
     }
     
